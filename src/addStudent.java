@@ -82,7 +82,7 @@ public class addStudent {
 
         myWindow.setVisible(true);
         myWindow.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        myWindow.setBounds(770,500,370,300);
+        myWindow.setBounds(770,300,400,300);
     }
 
 }

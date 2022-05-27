@@ -32,9 +32,58 @@ public class HomePage {
            }
        });
 
+       jb2.addActionListener(new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent e) {
+               new deleteStudent(myWindow);
+           }
+       });
+
+       jb3.addActionListener(new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent ev) {
+
+                   String sId = JOptionPane.showInputDialog(myWindow,"请输入要修改的学生的学号！！！");
+                   try {
+                       ResultSet rs = JDBCUtils.runQuery("select * from students where sId =" + sId);
+                       if (rs.next()) {
+                           new updateStudent(sId);
+                       }
+                       else {
+                           JOptionPane.showMessageDialog(null, "没有查到此学号的信息！");
+                       }
+                   } catch (Exception e) {
+                       e.printStackTrace();
+                   }
+               }
+
+
+       });
+
+       jb4.addActionListener(new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent ev) {
+               String sId = JOptionPane.showInputDialog(myWindow,"请输入要查询的学生的学号！！！");
+               try {
+                   ResultSet rs = JDBCUtils.runQuery("select * from students where sId =" + sId);
+                   if (rs.next()) {
+                       new selectStudent(sId);
+                   }
+                   else {
+                       JOptionPane.showMessageDialog(null, "没有查到此学号的信息！");
+                   }
+               } catch (Exception e) {
+                   e.printStackTrace();
+               }
+           }
+       });
+
        myWindow.setVisible(true);
        myWindow.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-       myWindow.setLocation(700,500);
-       myWindow.pack();
+       myWindow.setBounds(770,200,400,100);
    }
+
+    public static void main(String[] args) {
+        new HomePage("卓越");
+    }
 }

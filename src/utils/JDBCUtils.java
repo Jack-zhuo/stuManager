@@ -2,6 +2,7 @@ package utils;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.Properties;
 
@@ -14,6 +15,7 @@ public class JDBCUtils {
     private static Statement stmt = null;
 
     static {
+
         Properties pro = new Properties();
         try {
             pro.load(new FileReader("C:\\Users\\zy\\Desktop\\studentManager\\src\\jdbc.properties"));
