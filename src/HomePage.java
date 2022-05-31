@@ -46,12 +46,12 @@ public class HomePage {
                    String sId = JOptionPane.showInputDialog(myWindow,"请输入要修改的学生的学号！！！");
                    try {
                        ResultSet rs = JDBCUtils.runQuery("select * from students where sId =" + sId);
-                       if (rs.next()) {
+
+                       if (rs.next())
                            new updateStudent(sId);
-                       }
-                       else {
+                       else
                            JOptionPane.showMessageDialog(null, "没有查到此学号的信息！");
-                       }
+
                    } catch (Exception e) {
                        e.printStackTrace();
                    }
@@ -83,7 +83,4 @@ public class HomePage {
        myWindow.setBounds(770,200,400,100);
    }
 
-    public static void main(String[] args) {
-        new HomePage("卓越");
-    }
 }

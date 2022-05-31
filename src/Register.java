@@ -8,14 +8,19 @@ import java.sql.Connection;
 import java.sql.Statement;
 
 public class Register {
+    JFrame myWindow;
+    JFrame login;
+    JTextField input1;
+    JPasswordField input2;
     public Register(JFrame login) {
-        JFrame myWindow = new JFrame("注册页面");
+        myWindow = new JFrame("注册页面");
+        this.login = login;
         Container cp = myWindow.getContentPane();
 
         JLabel zhanghao = new JLabel("账号：");
         JLabel mima = new JLabel("密码：");
-        JTextField input1 = new JTextField();
-        JPasswordField input2 = new JPasswordField();
+        input1 = new JTextField();
+        input2 = new JPasswordField();
         JButton regBtn = new JButton("提交");
 
         zhanghao.setFont(new Font("黑体",Font.BOLD,15));
@@ -35,43 +40,40 @@ public class Register {
         cp.add(input2);
         cp.add(regBtn);
         
-        regBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String n = input1.getText();
-                String p = new String(input2.getPassword());
-                String username = "'"+n+"'";
-                String password = "'"+p+"'";
-
-                if (n.length()>1 && n.length()<6 && p.length()>3 && p.length()<10) {
-                    try {
-                        Connection conn = JDBCUtils.getConnection();
-                        Statement stmt = conn.createStatement();
-                        String sql = "insert into users (username,password) values ("+username+","+password+")";
-                        int i = stmt.executeUpdate(sql);
-                        if (i>0){
-                            JOptionPane.showMessageDialog(new JFrame(),"注册成功！");
-                            myWindow.setVisible(false);
-                            login.setVisible(true);
-                        }else {
-                            JOptionPane.showMessageDialog(new JFrame(),"请输入正确的账号密码！");
-                        }
-                        JDBCUtils.close(stmt,conn);
-
-
-
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(new JFrame(),"请输入正确的账号密码！");
-                        ex.printStackTrace();
-                    }
-                }else {
-                    JOptionPane.showMessageDialog(new JFrame(),"账号或密码长度不合法。账号字符长度：2~5; 密码字符长度：4~9");
-                }
-            }
-        });
+        regBtn.addActionListener(new handler());
 
         myWindow.setBounds(700,420,450,200);
         myWindow.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         myWindow.setVisible(true);
+    }
+    class handler implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String username = input1.getText();
+            String password = new String(input2.getPassword());
+
+            if (username.length() != 0 && password.length() != 0) {
+                try {
+                    Connection conn = JDBCUtils.getConnection();
+                    Statement stmt = conn.createStatement();
+                    String sql = "insert into users (username,password) values ('"+username+"','"+password+"')";
+                    int i = stmt.executeUpdate(sql);
+                    if (i>0){
+                        JOptionPane.showMessageDialog(null,"注册成功！");
+                        myWindow.setVisible(false);
+                        login.setVisible(true);
+                    }else {
+                        JOptionPane.showMessageDialog(null,"请输入正确的账号密码！");
+                    }
+                    JDBCUtils.close(stmt,conn);
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null,"请输入正确的账号密码！");
+                    ex.printStackTrace();
+                }
+            }else {
+                JOptionPane.showMessageDialog(null,"密码和账号不能为空");
+            }
+        }
     }
 }

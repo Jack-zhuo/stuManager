@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class Login {
@@ -54,13 +55,14 @@ public class Login {
             public void actionPerformed(ActionEvent e) {
                 String n = input1.getText();
                 String p = new String(input2.getPassword());
-                String username = "'"+n+"'";
-                String password = "'"+p+"'";
-                if (n.length()>1 && n.length()<6 && p.length()>3 && p.length()<10){
-                    try {
 
-                        String sql = "select * from users where username ="+username+"and password ="+password;
-                        ResultSet rs = JDBCUtils.runQuery(sql);
+                    try {
+                        String sql = "select * from users where username = ? and password = ?";
+                        PreparedStatement pstmt = JDBCUtils.getConnection().prepareStatement(sql);
+                        pstmt.setString(1,n);
+                        pstmt.setString(2,p);
+                        ResultSet rs = pstmt.executeQuery();
+
                         if (rs.next()){
                             new HomePage(rs.getString("username"));
                             myWindow.setVisible(false);
@@ -73,10 +75,6 @@ public class Login {
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
-                }else {
-                    JOptionPane.showMessageDialog(new JFrame(),"账号或密码长度不合法。账号字符长度：2~5; 密码字符长度：4~9");
-                }
-
             }
         });
         regBtn.addActionListener(new ActionListener() {

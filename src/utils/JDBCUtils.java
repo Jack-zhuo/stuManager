@@ -3,6 +3,7 @@ package utils;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.sql.*;
 import java.util.Properties;
 
@@ -17,8 +18,9 @@ public class JDBCUtils {
     static {
 
         Properties pro = new Properties();
+        InputStream ras = JDBCUtils.class.getClassLoader().getResourceAsStream("jdbc.properties");
         try {
-            pro.load(new FileReader("C:\\Users\\zy\\Desktop\\studentManager\\src\\jdbc.properties"));
+            pro.load(ras);
             url = pro.getProperty("url");
             user = pro.getProperty("user");
             password = pro.getProperty("password");
